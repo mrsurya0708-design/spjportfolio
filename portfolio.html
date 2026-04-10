@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suryaprakash Jena — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root[data-theme="dark"] {
+    --bg: #0d0d0f;
+    --bg2: #141417;
+    --bg3: #1c1c22;
+    --text: #f0ede8;
+    --text2: #a09d97;
+    --text3: #6a6762;
+    --accent: #e8c97a;
+    --accent2: #c4a24e;
+    --border: rgba(255,255,255,0.07);
+    --card: #16161a;
+    --tag-bg: #232328;
+    --tag-text: #c4a24e;
+    --toggle-bg: #232328;
+    --shadow: 0 4px 40px rgba(0,0,0,0.6);
+    --glow: 0 0 60px rgba(232,201,122,0.06);
+  }
+  :root[data-theme="light"] {
+    --bg: #faf8f4;
+    --bg2: #f2efe8;
+    --bg3: #e8e4d8;
+    --text: #1a1814;
+    --text2: #5a5650;
+    --text3: #9a9690;
+    --accent: #9a6f1c;
+    --accent2: #7a5412;
+    --border: rgba(0,0,0,0.08);
+    --card: #ffffff;
+    --tag-bg: #f0e8d0;
+    --tag-text: #7a5412;
+    --toggle-bg: #e0ddd4;
+    --shadow: 0 4px 40px rgba(0,0,0,0.10);
+    --glow: none;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.4s, color 0.4s;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 2.5rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    transition: background 0.4s;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── THEME TOGGLE ── */
+  .toggle-wrap { display: flex; align-items: center; gap: 0.6rem; }
+  .toggle-label { font-size: 0.75rem; color: var(--text3); }
+  .toggle {
+    width: 42px; height: 22px;
+    background: var(--toggle-bg);
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .toggle-thumb {
+    position: absolute; top: 2px; left: 2px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    transition: transform 0.3s, background 0.3s;
+  }
+  [data-theme="light"] .toggle-thumb { transform: translateX(20px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 7rem 2.5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero-bg-circle:nth-child(1) {
+    width: 600px; height: 600px;
+    top: -100px; right: -150px;
+    background: radial-gradient(circle, rgba(232,201,122,0.06) 0%, transparent 70%);
+  }
+  .hero-bg-circle:nth-child(2) {
+    width: 400px; height: 400px;
+    bottom: -80px; left: -100px;
+    background: radial-gradient(circle, rgba(232,201,122,0.04) 0%, transparent 70%);
+  }
+  .hero-inner {
+    max-width: 900px; margin: 0 auto; width: 100%;
+    position: relative; z-index: 1;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent2);
+    padding: 0.3rem 0.9rem;
+    border-radius: 999px;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.1s forwards;
+  }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.25s forwards;
+  }
+  .hero-name span {
+    color: var(--accent);
+    display: block;
+  }
+  .hero-desc {
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text2);
+    max-width: 540px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.4s forwards;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.55s forwards;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.8rem 1.8rem;
+    background: var(--accent);
+    color: #0d0d0f;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.8rem 1.8rem;
+    background: transparent;
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+
+  .hero-meta {
+    display: flex; gap: 2.5rem; margin-top: 4rem; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.7s forwards;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
+  .hero-meta-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); }
+  .hero-meta-value { font-size: 0.95rem; color: var(--text); }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 6rem 2.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .section-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.7rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 2.5rem;
+    color: var(--text);
+  }
+  .divider {
+    width: 40px; height: 2px;
+    background: var(--accent);
+    margin: 0.8rem 0 2.5rem;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+  @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-text {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--text2);
+  }
+  .info-list { list-style: none; display: flex; flex-direction: column; gap: 0.9rem; }
+  .info-list li {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.9rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .info-list li:last-child { border-bottom: none; }
+  .info-key { color: var(--text3); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .info-val { color: var(--text); font-weight: 400; text-align: right; }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
+  }
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .skill-card:hover { border-color: var(--accent2); transform: translateY(-4px); }
+  .skill-card:hover::before { opacity: 1; }
+  .skill-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--tag-bg);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+  .skill-name {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+  .skill-desc { font-size: 0.82rem; color: var(--text2); line-height: 1.6; }
+
+  /* ── EDUCATION ── */
+  .edu-timeline { position: relative; padding-left: 2rem; }
+  .edu-timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 6px; bottom: 6px;
+    width: 1px;
+    background: var(--border);
+  }
+  .edu-item {
+    position: relative;
+    padding: 0 0 2.5rem 1.5rem;
+  }
+  .edu-item::before {
+    content: '';
+    position: absolute; left: -2rem; top: 6px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--bg);
+  }
+  .edu-year {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+  .edu-degree {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+  .edu-inst { font-size: 0.85rem; color: var(--text2); }
+  .edu-badge {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  /* ── CONTACT ── */
+  .contact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  @media (max-width: 640px) { .contact-card { grid-template-columns: 1fr; } }
+  .contact-intro {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--text2);
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 0.75rem;
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: var(--text2);
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .contact-link:hover { color: var(--accent); border-color: var(--accent2); }
+  .contact-icon {
+    width: 32px; height: 32px;
+    border-radius: 7px;
+    background: var(--tag-bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  /* ── INTERESTS ── */
+  .interests-row { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+  .interest-tag {
+    padding: 0.5rem 1.2rem;
+    border-radius: 999px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .interest-tag:hover { background: var(--accent); color: #0d0d0f; transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2.5rem;
+    font-size: 0.8rem;
+    color: var(--text3);
+    border-top: 1px solid var(--border);
+  }
+  footer span { color: var(--accent); }
+
+  /* ── ANIM ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── MOBILE NAV ── */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    nav { padding: 1.2rem 1.5rem; }
+    .hero { padding: 6rem 1.5rem 3rem; }
+    section { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">S.J.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="toggle-wrap">
+    <span class="toggle-label" id="theme-label">Light</span>
+    <div class="toggle" id="themeToggle" role="button" aria-label="Toggle theme" tabindex="0">
+      <div class="toggle-thumb"></div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-circle"></div>
+  <div class="hero-bg-circle"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">Open to Opportunities</div>
+    <h1 class="hero-name">
+      Suryaprakash<span>Jena</span>
+    </h1>
+    <p class="hero-desc">
+      Commerce graduate pursuing an MBA — driven by a passion for accounting, business management, and building meaningful professional connections.
+    </p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-primary">Get In Touch →</a>
+      <a href="#education" class="btn-ghost">View Education</a>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Location</span>
+        <span class="hero-meta-value">Jajpur, Odisha</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Currently</span>
+        <span class="hero-meta-value">MBA Candidate</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Degree</span>
+        <span class="hero-meta-value">B.COM — 65%</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Languages</span>
+        <span class="hero-meta-value">English · Hindi · Odia</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-eyebrow fade-in">Who I Am</p>
+  <h2 class="section-title fade-in">About Me</h2>
+  <div class="divider fade-in"></div>
+  <div class="about-grid">
+    <p class="about-text fade-in">
+      I am a motivated fresher with a strong foundation in commerce and accounting. Currently pursuing my MBA at MSCB University, Baripada, I am eager to apply my academic knowledge in a real-world business environment.<br><br>
+      I thrive in team settings, believe in continuous learning, and am committed to contributing meaningfully wherever I work. I bring self-confidence, hard work, and a sincere dedication to organizational growth.
+    </p>
+    <ul class="info-list fade-in">
+      <li><span class="info-key">Date of Birth</span><span class="info-val">07 August 2003</span></li>
+      <li><span class="info-key">Nationality</span><span class="info-val">Indian</span></li>
+      <li><span class="info-key">Status</span><span class="info-val">Single</span></li>
+      <li><span class="info-key">Phone</span><span class="info-val">9861340516</span></li>
+      <li><span class="info-key">Email</span><span class="info-val">jenasurya39@gmail.com</span></li>
+      <li><span class="info-key">Address</span><span class="info-val">Jajpur, Odisha — 755043</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" style="border-top: 1px solid var(--border); max-width:100%; background: var(--bg2); padding: 6rem 0;">
+  <div style="max-width:900px; margin:0 auto; padding: 0 2.5rem;">
+    <p class="section-eyebrow fade-in">What I Know</p>
+    <h2 class="section-title fade-in">Professional Skills</h2>
+    <div class="divider fade-in"></div>
+    <div class="skills-grid">
+      <div class="skill-card fade-in">
+        <div class="skill-icon">📊</div>
+        <div class="skill-name">MS Office Suite</div>
+        <div class="skill-desc">Proficient in MS Word, MS Excel, and MS PowerPoint for documentation, analysis, and presentations.</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">📒</div>
+        <div class="skill-name">Tally Prime</div>
+        <div class="skill-desc">Working knowledge of Tally Prime for accounting entries, balance sheets, and financial statements.</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">💼</div>
+        <div class="skill-name">Accounting</div>
+        <div class="skill-desc">Strong understanding of accounting principles, bookkeeping, and financial management concepts.</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🤝</div>
+        <div class="skill-name">Interpersonal Skills</div>
+        <div class="skill-desc">Ability to collaborate, communicate clearly, and build relationships in team environments.</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🧩</div>
+        <div class="skill-name">Problem Solving</div>
+        <div class="skill-desc">Analytical mindset with a structured approach to resolving business and operational challenges.</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">📈</div>
+        <div class="skill-name">Self-Motivation</div>
+        <div class="skill-desc">Driven to learn continuously, take initiative, and deliver quality work with minimal supervision.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <p class="section-eyebrow fade-in">Academic Journey</p>
+  <h2 class="section-title fade-in">Education</h2>
+  <div class="divider fade-in"></div>
+  <div class="edu-timeline fade-in">
+    <div class="edu-item">
+      <div class="edu-year">Pursuing</div>
+      <div class="edu-degree">Master of Business Administration (MBA)</div>
+      <div class="edu-inst">MSCB University, Baripada</div>
+      <span class="edu-badge">In Progress</span>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">2024</div>
+      <div class="edu-degree">Bachelor of Commerce (B.COM)</div>
+      <div class="edu-inst">Utkal University</div>
+      <span class="edu-badge">65%</span>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">2021</div>
+      <div class="edu-degree">Class XII (Higher Secondary)</div>
+      <div class="edu-inst">CHSE, Odisha</div>
+      <span class="edu-badge">47%</span>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">2019</div>
+      <div class="edu-degree">Class X (Secondary)</div>
+      <div class="edu-inst">BSE, Odisha</div>
+      <span class="edu-badge">42%</span>
+    </div>
+  </div>
+</section>
+
+<!-- INTERESTS -->
+<section style="border-top: 1px solid var(--border); max-width:100%; background: var(--bg2); padding: 5rem 0;">
+  <div style="max-width:900px; margin:0 auto; padding:0 2.5rem;">
+    <p class="section-eyebrow fade-in">Beyond Work</p>
+    <h2 class="section-title fade-in">Interests</h2>
+    <div class="divider fade-in"></div>
+    <div class="interests-row fade-in">
+      <span class="interest-tag">📖 Reading</span>
+      <span class="interest-tag">✈️ Travelling</span>
+      <span class="interest-tag">⚽ Sports</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-eyebrow fade-in">Reach Out</p>
+  <h2 class="section-title fade-in">Contact Me</h2>
+  <div class="divider fade-in"></div>
+  <div class="contact-card fade-in">
+    <div>
+      <p class="contact-intro">
+        I am actively looking for opportunities to start my professional journey. Whether you have a role, internship, or just want to connect — I would love to hear from you.
+      </p>
+    </div>
+    <div class="contact-links">
+      <a href="tel:9861340516" class="contact-link">
+        <div class="contact-icon">📞</div>
+        <span>9861340516</span>
+      </a>
+      <a href="mailto:jenasurya39@gmail.com" class="contact-link">
+        <div class="contact-icon">✉️</div>
+        <span>jenasurya39@gmail.com</span>
+      </a>
+      <div class="contact-link" style="cursor:default;">
+        <div class="contact-icon">📍</div>
+        <span>Jajpur, Odisha, India — 755043</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  Designed &amp; built with care · <span>Suryaprakash Jena</span> · 2024
+</footer>
+
+<script>
+  const toggle = document.getElementById('themeToggle');
+  const label = document.getElementById('theme-label');
+  const html = document.documentElement;
+
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    label.textContent = theme === 'dark' ? 'Light' : 'Dark';
+    localStorage.setItem('theme', theme);
+  }
+
+  toggle.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+  });
+  toggle.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') toggle.click(); });
+
+  const saved = localStorage.getItem('theme') || 'dark';
+  setTheme(saved);
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
